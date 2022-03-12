@@ -1,0 +1,65 @@
+﻿<Window x:Class="DeviceExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeviceExplorer"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Device Explorer" Height="1000" Width="1400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu Name="MainMenu" IsMainMenu="True">
+            <MenuItem Height="24" Header="_File">
+                <MenuItem
+                    Name="Settings"
+                    Click="Settings_Click"
+                    Header="Preferences..."
+                    Visibility="Collapsed" />
+                <Separator Visibility="Collapsed" />
+                <MenuItem
+                    Name="MenuExit"
+                    Click="Exit_Click"
+                    Header="E_xit"
+                    InputGestureText="Alt+F4" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem
+                    Name="ViewHiddenItems"
+                    Click="ViewHiddenItems_Click"
+                    Header="_View Hidden Items" />
+                <Separator />
+                <MenuItem Click="View_Refresh" Header="_Refresh" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Click="About_Click" Header="About..." />
+            </MenuItem>
+        </Menu>
+        <Grid Name="PropertiesGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Name="TreeGrid">
+                <TreeView
+                    x:Name="TV"
+                    ContextMenuOpening="ContextMenu_ContextMenuOpening"
+                    SelectedItemChanged="TV_SelectedItemChanged">
+                </TreeView>
+            </Grid>
+            <GridSplitter
+                Name="PropertiesSplitter"
+                Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch"
+                ShowsPreview="True" />
+            <Grid Name="PropsGrid" Grid.Column="2">
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
