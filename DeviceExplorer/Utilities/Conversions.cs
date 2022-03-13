@@ -88,69 +88,6 @@ namespace DeviceExplorer.Utilities
             }
         }
 
-        private static readonly Dictionary<char, int> _romanMap = new() { { 'I', 1 }, { 'V', 5 }, { 'X', 10 }, { 'L', 50 }, { 'C', 100 }, { 'D', 500 }, { 'M', 1000 } };
-        public static bool TryParseRoman(string text, out int value)
-        {
-            value = 0;
-            if (string.IsNullOrEmpty(text))
-                return false;
-
-            var number = 0;
-            for (var i = 0; i < text.Length; i++)
-            {
-                if (!_romanMap.TryGetValue(text[i], out var num))
-                    return false;
-
-                if ((i + 1) < text.Length)
-                {
-                    if (!_romanMap.TryGetValue(text[i + 1], out var num2))
-                        return false;
-
-                    if (num < num2)
-                    {
-                        number -= num;
-                        continue;
-                    }
-                }
-
-                number += num;
-            }
-
-            value = number;
-            return true;
-        }
-
-        // A => 1
-        // Z => 26
-        // AA => 27
-        // AB => 28
-        // XFD => 16384
-        public static bool TryParseExcelColumn(string text, out int value)
-        {
-            value = 0;
-            if (string.IsNullOrEmpty(text))
-                return false;
-
-            if (int.TryParse(text, out value) && value >= 0)
-                return true;
-
-            var number = 0;
-            for (var i = 0; i < text.Length; i++)
-            {
-                var c = char.ToLowerInvariant(text[i]);
-                if (c < 'a' || c > 'z')
-                    return false;
-
-                number *= 26;
-                var num = c - 'a';
-                num++;
-                number += num;
-            }
-
-            value = number;
-            return true;
-        }
-
         public static bool EqualsIgnoreCase(this string thisString, string text, bool trim = false)
         {
             if (trim)
@@ -257,32 +194,6 @@ namespace DeviceExplorer.Utilities
                     return false;
             }
             return true;
-        }
-
-        public static T GetSegment<T>(this Uri uri, int index, T defaultValue = default)
-        {
-            var seg = GetSegment(uri, index);
-            if (seg == null)
-                return defaultValue;
-
-            return ChangeType<T>(seg, defaultValue);
-        }
-
-        public static string GetSegment(this Uri uri, int index) => GetSegments(uri).Skip(index)?.FirstOrDefault().Nullify();
-        public static string GetSegmentAfter(this Uri uri, int index) => string.Join(Path.AltDirectorySeparatorChar.ToString(), GetSegments(uri).Skip(index));
-
-        public static IEnumerable<string> GetSegments(this Uri uri)
-        {
-            if (uri == null)
-                yield break;
-
-            foreach (var segment in uri.Segments)
-            {
-                if (segment.EndsWith("/"))
-                    yield return segment.Substring(0, segment.Length - 1);
-                else
-                    yield return segment;
-            }
         }
 
         public static new bool Equals(object o1, object o2)

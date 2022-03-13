@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Windows.Devices.Enumeration;
+using DeviceExplorer.Model;
+using DeviceExplorer.Utilities;
 
 namespace DeviceExplorer
 {
@@ -22,26 +13,22 @@ namespace DeviceExplorer
         public MainWindow()
         {
             InitializeComponent();
+            DeviceManagerItem = new DeviceManagerItem();
 
-            DeviceInterfaceWatcher = DeviceInformation.CreateWatcher(string.Empty, Array.Empty<string>(), DeviceInformationKind.DeviceInterface);
-            DeviceInterfaceWatcher.Added += OnDeviceAdded;
-            DeviceInterfaceWatcher.Removed += OnDeviceRemoved;
-            DeviceInterfaceWatcher.Updated += OnDeviceUpdated;
-            DeviceInterfaceWatcher.Start();
+            TV.ItemsSource = new TreeItem[] { DeviceManagerItem };
         }
 
-        public DeviceWatcher DeviceInterfaceWatcher { get; }
+        public DeviceManagerItem DeviceManagerItem { get; }
 
-        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate args)
+        protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
         {
-        }
-
-        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
-        {
-        }
-
-        private void OnDeviceAdded(DeviceWatcher sender, DeviceInformation args)
-        {
+            var item = (e.OriginalSource as DependencyObject).GetVisualSelfOrParent<TreeViewItem>();
+            if (item != null)
+            {
+                item.Focus();
+                e.Handled = true;
+                return;
+            }
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -56,7 +43,11 @@ namespace DeviceExplorer
 
         private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-
+            var item = TV.GetSelectedDataContext<TreeItem>();
+            if (item != null)
+            {
+                TV.ContextMenu.DataContext = item;
+            }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e) => Close();

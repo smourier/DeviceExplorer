@@ -48,6 +48,7 @@
                 <TreeView
                     x:Name="TV"
                     ContextMenuOpening="ContextMenu_ContextMenuOpening"
+                    ItemTemplate="{StaticResource TreeItem}"
                     SelectedItemChanged="TV_SelectedItemChanged">
                 </TreeView>
             </Grid>
