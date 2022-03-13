@@ -14,10 +14,9 @@ namespace DeviceExplorer.Model
     public class DeviceManagerItem : TreeItem
     {
         internal readonly ConcurrentDictionary<string, DeviceInterfaceItem> _deviceInterfaces = new ConcurrentDictionary<string, DeviceInterfaceItem>();
-        private readonly ConcurrentDictionary<Guid, DeviceClassItem> _classItems = new ConcurrentDictionary<Guid, DeviceClassItem>();
 
         public DeviceManagerItem()
-            : base(null, true)
+            : base(null)
         {
             Watcher = DeviceInformation.CreateWatcher(string.Empty, Array.Empty<string>(), DeviceInformationKind.DeviceInterface);
             Watcher.Added += OnDeviceAdded;
@@ -26,28 +25,30 @@ namespace DeviceExplorer.Model
             Watcher.Start();
 
             Name = "Device Manager";
-            //IsExpanded = true;
+            IsExpanded = true;
             using var ico = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
             Image = Imaging.CreateBitmapSourceFromHIcon(ico.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
         public DeviceWatcher Watcher { get; }
 
-        protected override void LoadChildren()
+        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate update)
         {
-            Children.Clear();
-            foreach (var item in _classItems.OrderBy(i => i.Value.Name))
+            if (!_deviceInterfaces.TryGetValue(update.Id, out var deviceInterfaceItem))
+                return;
+
+            App.Current.Dispatcher.Invoke(() =>
             {
-                Children.Add(item.Value);
-            }
+                deviceInterfaceItem.Parent.UpdateDeviceInterface(update);
+            });
         }
 
-        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate device)
+        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate update)
         {
-        }
+            if (!_deviceInterfaces.TryGetValue(update.Id, out var deviceInterfaceItem))
+                return;
 
-        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate device)
-        {
+            // TODO
         }
 
         private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation device)
@@ -55,13 +56,17 @@ namespace DeviceExplorer.Model
             var information = await GetInformationAsync(device).ConfigureAwait(false);
             var classGuid = (Guid)information.Properties["System.Devices.ClassGuid"];
 
-            if (!_classItems.TryGetValue(classGuid, out var classItem))
+            App.Current.Dispatcher.Invoke(() =>
             {
-                classItem = new DeviceClassItem(this, classGuid);
-                _classItems[classGuid] = classItem;
-            }
+                var classItem = Children.Cast<DeviceClassItem>().FirstOrDefault(i => i.ClassGuid == classGuid);
+                if (classItem == null)
+                {
+                    classItem = new DeviceClassItem(this, classGuid);
+                    Children.Add(classItem);
+                }
 
-            classItem.AddDevice(information, device);
+                classItem.AddDevice(information, device);
+            });
         }
 
         private static async Task<DeviceInformation> GetInformationAsync(DeviceInformation info) => await DeviceInformation.CreateFromIdAsync((string)info.Properties["System.Devices.DeviceInstanceId"], new[] { "System.Devices.ClassGuid" }, DeviceInformationKind.Device);

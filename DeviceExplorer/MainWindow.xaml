@@ -42,7 +42,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Grid Name="TreeGrid">
                 <TreeView
@@ -50,6 +50,22 @@
                     ContextMenuOpening="ContextMenu_ContextMenuOpening"
                     ItemTemplate="{StaticResource TreeItem}"
                     SelectedItemChanged="TV_SelectedItemChanged">
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem
+                                Name="ExpandAll"
+                                Click="ExpandAll_Click"
+                                Header="Expand All"
+                                IsEnabled="{Binding IsCollapsed, Converter={StaticResource BoolToVis}}">
+                            </MenuItem>
+                            <MenuItem
+                                Name="CollapseAll"
+                                Click="CollapseAll_Click"
+                                Header="Collapse All"
+                                IsEnabled="{Binding IsExpanded, Converter={StaticResource BoolToVis}}">
+                            </MenuItem>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
                 </TreeView>
             </Grid>
             <GridSplitter
@@ -60,6 +76,8 @@
                 VerticalAlignment="Stretch"
                 ShowsPreview="True" />
             <Grid Name="PropsGrid" Grid.Column="2">
+                <DataGrid x:Name="DG" IsReadOnly="True">
+                </DataGrid>
             </Grid>
         </Grid>
     </Grid>

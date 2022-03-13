@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,28 @@ namespace DeviceExplorer
 
         private void TV_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (e.NewValue is TreeItem item)
+            {
+                DG.ItemsSource = item.Properties;//.Cast<DeviceItem.DeviceProperty>();
+            }
+        }
 
+        private void ExpandAll_Click(object sender, RoutedEventArgs e)
+        {
+            var item = TV.GetSelectedDataContext<TreeItem>();
+            if (item != null)
+            {
+                item.ExpandAll();
+            }
+        }
+
+        private void CollapseAll_Click(object sender, RoutedEventArgs e)
+        {
+            var item = TV.GetSelectedDataContext<TreeItem>();
+            if (item != null)
+            {
+                item.CollapseAll();
+            }
         }
     }
 }

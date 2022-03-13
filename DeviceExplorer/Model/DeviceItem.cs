@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using DeviceExplorer.Utilities;
 using Windows.Devices.Enumeration;
 
 namespace DeviceExplorer.Model
 {
     public class DeviceItem : TreeItem
     {
-        private readonly ConcurrentDictionary<string, DeviceInterfaceItem> _items = new ConcurrentDictionary<string, DeviceInterfaceItem>();
-        private readonly Lazy<BitmapSource> _icon;
-
+        private readonly SortableObservableCollection<DeviceProperty> _properties = new SortableObservableCollection<DeviceProperty>
+        {
+            SortingSelector = o => o.Name
+        };
+        
         public DeviceItem(DeviceClassItem parent, DeviceInformation device)
-            : base(parent, true)
+            : base(parent)
         {
             if (device == null)
                 throw new ArgumentNullException(nameof(device));
@@ -24,42 +22,62 @@ namespace DeviceExplorer.Model
             Device = device;
             Name = device.Name;
 
-            _icon = new Lazy<BitmapSource>(() =>
+            _properties.Add(new DeviceProperty("Id")
             {
-                if (_items.Count == 0)
-                    return null;
+                Value = device.Id
+            });
 
-                if (!_items.FirstOrDefault().Value.DeviceInterface.Properties.TryGetValue("System.Devices.Icon", out var value) || value is not string location)
-                    return null;
+            foreach (var prop in device.Properties)
+            {
+                var p = new DeviceProperty(prop.Key)
+                {
+                    Value = prop.Value
+                };
+                _properties.Add(p);
+            }
+        }
 
-                var index = DeviceClassItem.ParseIconLocation(location, out var path);
-                if (path == null)
-                    return null;
+        private class DeviceProperty : Property
+        {
+            public DeviceProperty(string name)
+                : base(name)
+            {
+            }
 
-                return DeviceClassItem.LoadIcon(path, index);
-            }, false);
+            public object Value { get; set; }
         }
 
         public DeviceInformation Device { get; }
         public new DeviceClassItem Parent => (DeviceClassItem)base.Parent;
         public DeviceManagerItem Root => Parent.Parent;
-        public override ImageSource Image => _icon.Value;
-
-        protected override void LoadChildren()
-        {
-            Children.Clear();
-            foreach (var item in _items.OrderBy(i => i.Value.Name))
-            {
-                Children.Add(item.Value);
-            }
-        }
+        public override IEnumerable<Property> Properties => _properties;
 
         internal void AddDeviceInterface(DeviceInformation deviceInterface)
         {
-            var interfaceItem = new DeviceInterfaceItem(this, deviceInterface);
-            _items[deviceInterface.Id] = interfaceItem;
+            var interfaceItem = Children.Cast<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
+            if (interfaceItem == null)
+            {
+                interfaceItem = new DeviceInterfaceItem(this, deviceInterface);
+                Children.Add(interfaceItem);
+                if (Image == null)
+                {
+                    Image = interfaceItem.Image;
+                }
+            }
 
             Root._deviceInterfaces[deviceInterface.Id] = interfaceItem;
+        }
+
+        internal void UpdateDeviceInterface(DeviceInformationUpdate deviceInterface)
+        {
+            var interfaceItem = Children.Cast<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
+            if (interfaceItem == null)
+                return;
+
+            if (!deviceInterface.Properties.TryGetValue("System.Devices.InterfaceEnabled", out var obj) || obj is not bool enabled)
+                return;
+
+            interfaceItem.IsHidden = !enabled;
         }
     }
 }

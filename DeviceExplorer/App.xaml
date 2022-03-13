@@ -20,8 +20,8 @@
         <HierarchicalDataTemplate x:Key="TreeItem" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
                 <Image
-                    Width="32"
-                    Height="32"
+                    Width="16"
+                    Height="16"
                     Margin="-2,0,2,0"
                     Source="{Binding Image}" />
                 <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
