@@ -54,7 +54,11 @@ namespace DeviceExplorer.Model
         private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation device)
         {
             var information = await GetInformationAsync(device).ConfigureAwait(false);
-            var classGuid = (Guid)information.Properties["System.Devices.ClassGuid"];
+            var guid = information.Properties["System.Devices.ClassGuid"];
+            if (guid == null)
+                return;
+
+            var classGuid = (Guid)guid;
 
             App.Current.Dispatcher.Invoke(() =>
             {
