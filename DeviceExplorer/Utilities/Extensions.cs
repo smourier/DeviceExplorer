@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,20 @@ namespace DeviceExplorer.Utilities
 {
     public static class Extensions
     {
+        public static bool TryGetValue<T>(this IReadOnlyDictionary<string, object> dictionary, string key, out T value)
+        {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            if (dictionary == null || !dictionary.TryGetValue(key, out object v))
+            {
+                value = default;
+                return false;
+            }
+
+            return Conversions.TryChangeType(v, out value);
+        }
+
         public static T GetSelectedDataContext<T>(this TreeView treeView)
         {
             if (treeView == null)

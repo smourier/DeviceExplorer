@@ -13,7 +13,7 @@ namespace DeviceExplorer.Model
 {
     public class DeviceManagerItem : TreeItem
     {
-        internal readonly ConcurrentDictionary<string, DeviceInterfaceItem> _deviceInterfaces = new ConcurrentDictionary<string, DeviceInterfaceItem>();
+        internal readonly ConcurrentDictionary<string, DeviceInterfaceItem> _deviceInterfaces = new();
 
         public DeviceManagerItem()
             : base(null)
@@ -59,7 +59,6 @@ namespace DeviceExplorer.Model
                 return;
 
             var classGuid = (Guid)guid;
-
             App.Current.Dispatcher.Invoke(() =>
             {
                 var classItem = Children.Cast<DeviceClassItem>().FirstOrDefault(i => i.ClassGuid == classGuid);

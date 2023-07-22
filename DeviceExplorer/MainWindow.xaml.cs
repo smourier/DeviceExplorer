@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,11 +14,13 @@ namespace DeviceExplorer
         {
             InitializeComponent();
             DeviceManagerItem = new DeviceManagerItem();
+            BluetoothManagerItem = new AssociationEndpointManagerItem();
 
-            TV.ItemsSource = new TreeItem[] { DeviceManagerItem };
+            TV.ItemsSource = new TreeItem[] { DeviceManagerItem, BluetoothManagerItem };
         }
 
         public DeviceManagerItem DeviceManagerItem { get; }
+        public AssociationEndpointManagerItem BluetoothManagerItem { get; }
 
         protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
         {
@@ -62,7 +63,7 @@ namespace DeviceExplorer
         {
             if (e.NewValue is TreeItem item)
             {
-                DG.ItemsSource = item.Properties;//.Cast<DeviceItem.DeviceProperty>();
+                DG.ItemsSource = item.Properties;
             }
         }
 

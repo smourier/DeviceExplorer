@@ -7,7 +7,7 @@ using Windows.Devices.Enumeration;
 
 namespace DeviceExplorer.Model
 {
-    public class DeviceInterfaceItem : TreeItem
+    public class AssociationEndpointItem : TreeItem
     {
         private readonly Lazy<BitmapSource> _icon;
         private readonly SortableObservableCollection<ValueProperty> _properties = new()
@@ -15,19 +15,17 @@ namespace DeviceExplorer.Model
             SortingSelector = o => o.Name
         };
 
-        public DeviceInterfaceItem(DeviceItem parent, DeviceInformation deviceInterface)
+        public AssociationEndpointItem(AssociationEndpointManagerItem parent, DeviceInformation info)
             : base(parent)
         {
-            if (deviceInterface == null)
-                throw new ArgumentNullException(nameof(deviceInterface));
-
-            DeviceInterface = deviceInterface;
-            Name = deviceInterface.Name;
-            IsHidden = !deviceInterface.IsEnabled;
+            Name = info.Name.Nullify() ?? info.Id;
+            Name = info.Id;
+            Id = info.Id;
 
             _icon = new Lazy<BitmapSource>(() =>
             {
-                if (!DeviceInterface.Properties.TryGetValue("System.Devices.Icon", out var value) || value is not string location)
+                if (!info.Properties.TryGetValue<string>("System.Devices.GlyphIcon", out var location) &&
+                    !info.Properties.TryGetValue<string>("System.Devices.Icon", out location))
                     return null;
 
                 var index = DeviceClassItem.ParseIconLocation(location, out var path);
@@ -37,12 +35,7 @@ namespace DeviceExplorer.Model
                 return DeviceClassItem.LoadIcon(path, index);
             }, false);
 
-            _properties.Add(new ValueProperty("Id")
-            {
-                Value = deviceInterface.Id
-            });
-
-            foreach (var prop in deviceInterface.Properties)
+            foreach (var prop in info.Properties)
             {
                 var p = new ValueProperty(prop.Key)
                 {
@@ -52,8 +45,7 @@ namespace DeviceExplorer.Model
             }
         }
 
-        public DeviceInformation DeviceInterface { get; }
-        public new DeviceItem Parent => (DeviceItem)base.Parent;
+        public string Id { get; }
         public override ImageSource Image => _icon.Value;
         public override IEnumerable<Property> Properties => _properties;
     }

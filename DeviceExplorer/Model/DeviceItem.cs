@@ -8,11 +8,11 @@ namespace DeviceExplorer.Model
 {
     public class DeviceItem : TreeItem
     {
-        private readonly SortableObservableCollection<DeviceProperty> _properties = new SortableObservableCollection<DeviceProperty>
+        private readonly SortableObservableCollection<ValueProperty> _properties = new()
         {
             SortingSelector = o => o.Name
         };
-        
+
         public DeviceItem(DeviceClassItem parent, DeviceInformation device)
             : base(parent)
         {
@@ -22,29 +22,19 @@ namespace DeviceExplorer.Model
             Device = device;
             Name = device.Name;
 
-            _properties.Add(new DeviceProperty("Id")
+            _properties.Add(new ValueProperty("Id")
             {
                 Value = device.Id
             });
 
             foreach (var prop in device.Properties)
             {
-                var p = new DeviceProperty(prop.Key)
+                var p = new ValueProperty(prop.Key)
                 {
                     Value = prop.Value
                 };
                 _properties.Add(p);
             }
-        }
-
-        private class DeviceProperty : Property
-        {
-            public DeviceProperty(string name)
-                : base(name)
-            {
-            }
-
-            public object Value { get; set; }
         }
 
         public DeviceInformation Device { get; }

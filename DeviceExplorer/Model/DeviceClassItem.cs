@@ -22,7 +22,7 @@ namespace DeviceExplorer.Model
         public static IReadOnlyDictionary<Guid, string> GuidsNames => _guidsNames.Value;
 
         private readonly Lazy<BitmapSource> _icon;
-        private readonly SortableObservableCollection<ClassProperty> _properties = new SortableObservableCollection<ClassProperty>
+        private readonly SortableObservableCollection<ClassProperty> _properties = new()
         {
             SortingSelector = o => o.Name
         };
@@ -62,7 +62,7 @@ namespace DeviceExplorer.Model
             _properties.Add(prop);
         }
 
-        private class ClassProperty : Property
+        private sealed class ClassProperty : Property
         {
             public ClassProperty(string name)
                 : base(name)
