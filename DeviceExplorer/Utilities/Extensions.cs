@@ -1,16 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Windows.Storage.Streams;
 
 namespace DeviceExplorer.Utilities
 {
     public static class Extensions
     {
+        public static byte[] AsBytes(this IBuffer buffer)
+        {
+            if (buffer == null)
+                return null;
+
+            using var ms = new MemoryStream((int)buffer.Length);
+            using var bs = buffer.AsStream();
+            bs.CopyTo(ms);
+            return ms.ToArray();
+        }
+
         public static bool TryGetValue<T>(this IReadOnlyDictionary<string, object> dictionary, string key, out T value)
         {
             if (key == null)

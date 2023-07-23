@@ -44,7 +44,7 @@ namespace DeviceExplorer.Model
 
         internal void AddDeviceInterface(DeviceInformation deviceInterface)
         {
-            var interfaceItem = Children.Cast<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
+            var interfaceItem = Children.OfType<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
             if (interfaceItem == null)
             {
                 interfaceItem = new DeviceInterfaceItem(this, deviceInterface);
@@ -60,7 +60,7 @@ namespace DeviceExplorer.Model
 
         internal void UpdateDeviceInterface(DeviceInformationUpdate deviceInterface)
         {
-            var interfaceItem = Children.Cast<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
+            var interfaceItem = Children.OfType<DeviceInterfaceItem>().FirstOrDefault(d => d.DeviceInterface.Id == deviceInterface.Id);
             if (interfaceItem == null)
                 return;
 

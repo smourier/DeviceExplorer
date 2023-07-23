@@ -68,11 +68,11 @@ namespace DeviceExplorer.Model
 
         private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate device)
         {
-            App.Current.Dispatcher.Invoke(() =>
+            App.Current?.Dispatcher?.Invoke(() =>
             {
                 foreach (var protocolItem in Children)
                 {
-                    var item = protocolItem.Children.Cast<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
+                    var item = protocolItem.Children.OfType<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
                     if (item == null)
                         continue;
 
@@ -86,16 +86,16 @@ namespace DeviceExplorer.Model
             if (!device.Properties.TryGetValue<Guid>("System.Devices.Aep.ProtocolId", out var protocolId) || protocolId == Guid.Empty)
                 return;
 
-            App.Current.Dispatcher.Invoke(() =>
+            App.Current?.Dispatcher?.Invoke(() =>
             {
-                var protocolItem = Children.Cast<AssociationEndpointProtocolItem>().FirstOrDefault(i => i.Id == protocolId);
+                var protocolItem = Children.OfType<AssociationEndpointProtocolItem>().FirstOrDefault(i => i.Id == protocolId);
                 if (protocolItem == null)
                 {
                     protocolItem = new AssociationEndpointProtocolItem(this, protocolId);
                     Children.Add(protocolItem);
                 }
 
-                var item = protocolItem.Children.Cast<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
+                var item = protocolItem.Children.OfType<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
                 if (item == null)
                 {
                     item = new AssociationEndpointItem(protocolItem, device);

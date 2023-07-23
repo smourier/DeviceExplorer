@@ -37,7 +37,7 @@ namespace DeviceExplorer.Model
             if (!_deviceInterfaces.TryGetValue(update.Id, out var deviceInterfaceItem))
                 return;
 
-            App.Current.Dispatcher.Invoke(() =>
+            App.Current?.Dispatcher?.Invoke(() =>
             {
                 deviceInterfaceItem.Parent.UpdateDeviceInterface(update);
             });
@@ -59,9 +59,9 @@ namespace DeviceExplorer.Model
                 return;
 
             var classGuid = (Guid)guid;
-            App.Current.Dispatcher.Invoke(() =>
+            App.Current?.Dispatcher?.Invoke(() =>
             {
-                var classItem = Children.Cast<DeviceClassItem>().FirstOrDefault(i => i.ClassGuid == classGuid);
+                var classItem = Children.OfType<DeviceClassItem>().FirstOrDefault(i => i.ClassGuid == classGuid);
                 if (classItem == null)
                 {
                     classItem = new DeviceClassItem(this, classGuid);

@@ -65,7 +65,7 @@
                 Width="5"
                 HorizontalAlignment="Center"
                 ShowsPreview="True" />
-            <Grid Name="PropsGrid" Grid.Column="3">
+            <Grid Name="PropsGrid" Grid.Column="3" TextBlock.FontFamily="Consolas">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="89*" />
                     <RowDefinition Height="71*" />

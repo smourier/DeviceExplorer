@@ -14,13 +14,15 @@ namespace DeviceExplorer
         {
             InitializeComponent();
             DeviceManagerItem = new DeviceManagerItem();
-            BluetoothManagerItem = new AssociationEndpointManagerItem();
+            AssociationEndpointManagerItem = new AssociationEndpointManagerItem();
+            BluetoothLEAdvertisementManager = new BluetoothLEAdvertisementManager(AssociationEndpointManagerItem);
 
-            TV.ItemsSource = new TreeItem[] { DeviceManagerItem, BluetoothManagerItem };
+            TV.ItemsSource = new TreeItem[] { DeviceManagerItem, AssociationEndpointManagerItem };
         }
 
         public DeviceManagerItem DeviceManagerItem { get; }
-        public AssociationEndpointManagerItem BluetoothManagerItem { get; }
+        public AssociationEndpointManagerItem AssociationEndpointManagerItem { get; }
+        public BluetoothLEAdvertisementManager BluetoothLEAdvertisementManager { get; }
 
         protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
         {

@@ -10,7 +10,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Bluetooth\ad_types.json" />
+    <None Remove="Resources\Bluetooth\company_identifiers.json" />
+    <None Remove="Resources\Bluetooth\known_service_guids.json" />
+    <None Remove="Resources\Bluetooth\known_service_uuids.json" />
+    <None Remove="Resources\Bluetooth\service_uuids.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="DeviceExplorer.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bluetooth\ad_types.json" />
+    <EmbeddedResource Include="Resources\Bluetooth\company_identifiers.json" />
+    <EmbeddedResource Include="Resources\Bluetooth\known_service_uuids.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Bluetooth\known_service_guids.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Bluetooth\service_uuids.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

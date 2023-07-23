@@ -1,0 +1,206 @@
+﻿[
+  {
+    "Name": "Flags",
+    "Value": 1
+  },
+  {
+    "Name": "Incomplete List of 16-bit Service Class UUIDs",
+    "Value": 2
+  },
+  {
+    "Name": "Complete List of 16-bit Service Class UUIDs",
+    "Value": 3
+  },
+  {
+    "Name": "Incomplete List of 32-bit Service Class UUIDs",
+    "Value": 4
+  },
+  {
+    "Name": "Complete List of 32-bit Service Class UUIDs",
+    "Value": 5
+  },
+  {
+    "Name": "Incomplete List of 128-bit Service Class UUIDs",
+    "Value": 6
+  },
+  {
+    "Name": "Complete List of 128-bit Service Class UUIDs",
+    "Value": 7
+  },
+  {
+    "Name": "Shortened Local Name",
+    "Value": 8
+  },
+  {
+    "Name": "Complete Local Name",
+    "Value": 9
+  },
+  {
+    "Name": "Tx Power Level",
+    "Value": 10
+  },
+  {
+    "Name": "Class of Device",
+    "Value": 13
+  },
+  {
+    "Name": "Simple Pairing Hash C-192",
+    "Value": 14
+  },
+  {
+    "Name": "Simple Pairing Randomizer R-192",
+    "Value": 15
+  },
+  {
+    "Name": "Device ID",
+    "Value": 16
+  },
+  {
+    "Name": "Security Manager TK Value",
+    "Value": 16
+  },
+  {
+    "Name": "Security Manager Out of Band Flags",
+    "Value": 17
+  },
+  {
+    "Name": "Peripheral Connection Interval Range",
+    "Value": 18
+  },
+  {
+    "Name": "List of 16-bit Service Solicitation UUIDs",
+    "Value": 20
+  },
+  {
+    "Name": "List of 128-bit Service Solicitation UUIDs",
+    "Value": 21
+  },
+  {
+    "Name": "Service Data - 16-bit UUID",
+    "Value": 22
+  },
+  {
+    "Name": "Public Target Address",
+    "Value": 23
+  },
+  {
+    "Name": "Random Target Address",
+    "Value": 24
+  },
+  {
+    "Name": "Appearance",
+    "Value": 25
+  },
+  {
+    "Name": "Advertising Interval",
+    "Value": 26
+  },
+  {
+    "Name": "LE Bluetooth Device Address",
+    "Value": 27
+  },
+  {
+    "Name": "LE Role",
+    "Value": 28
+  },
+  {
+    "Name": "Simple Pairing Hash C-256",
+    "Value": 29
+  },
+  {
+    "Name": "Simple Pairing Randomizer R-256",
+    "Value": 30
+  },
+  {
+    "Name": "List of 32-bit Service Solicitation UUIDs",
+    "Value": 31
+  },
+  {
+    "Name": "Service Data - 32-bit UUID",
+    "Value": 32
+  },
+  {
+    "Name": "Service Data - 128-bit UUID",
+    "Value": 33
+  },
+  {
+    "Name": "LE Secure Connections Confirmation Value",
+    "Value": 34
+  },
+  {
+    "Name": "LE Secure Connections Random Value",
+    "Value": 35
+  },
+  {
+    "Name": "URI",
+    "Value": 36
+  },
+  {
+    "Name": "Indoor Positioning",
+    "Value": 37
+  },
+  {
+    "Name": "Transport Discovery Data",
+    "Value": 38
+  },
+  {
+    "Name": "LE Supported Features",
+    "Value": 39
+  },
+  {
+    "Name": "Channel Map Update Indication",
+    "Value": 40
+  },
+  {
+    "Name": "PB-ADV",
+    "Value": 41
+  },
+  {
+    "Name": "Mesh Message",
+    "Value": 42
+  },
+  {
+    "Name": "Mesh Beacon",
+    "Value": 43
+  },
+  {
+    "Name": "BIGInfo",
+    "Value": 44
+  },
+  {
+    "Name": "Broadcast_Code",
+    "Value": 45
+  },
+  {
+    "Name": "Resolvable Set Identifier",
+    "Value": 46
+  },
+  {
+    "Name": "Advertising Interval - long",
+    "Value": 47
+  },
+  {
+    "Name": "Broadcast_Name",
+    "Value": 48
+  },
+  {
+    "Name": "Encrypted Advertising Data",
+    "Value": 49
+  },
+  {
+    "Name": "Periodic Advertising Response Timing Information",
+    "Value": 50
+  },
+  {
+    "Name": "Electronic Shelf Label",
+    "Value": 52
+  },
+  {
+    "Name": "3D Information Data",
+    "Value": 61
+  },
+  {
+    "Name": "Manufacturer Specific Data",
+    "Value": 255
+  }
+]

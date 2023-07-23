@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -453,6 +452,70 @@ namespace DeviceExplorer.Utilities
                     return ChangeType<ulong>(value, 0, CultureInfo.InvariantCulture);
             }
 #pragma warning restore IDE0066 // Convert switch statement to expression
+        }
+
+        public static string ToHexaDump(this byte[] bytes, int offset = 0, int count = -1, string prefix = null, bool addHeader = true)
+        {
+            if (bytes == null)
+                return string.Empty;
+
+            if (offset < 0)
+            {
+                offset = 0;
+            }
+
+            if (count < 0)
+            {
+                count = bytes.Length;
+            }
+
+            if ((offset + count) > bytes.Length)
+            {
+                count = bytes.Length - offset;
+            }
+
+            var sb = new StringBuilder();
+            if (addHeader)
+            {
+                sb.Append(prefix);
+                //             0         1         2         3         4         5         6         7
+                //             01234567890123456789012345678901234567890123456789012345678901234567890123456789
+                sb.AppendLine("Offset    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F  0123456789ABCDEF");
+                sb.AppendLine("--------  -----------------------------------------------  ----------------");
+            }
+
+            for (int i = 0; i < count; i += 16)
+            {
+                sb.Append(prefix);
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X8}  ", i + offset);
+
+                int j;
+                for (j = 0; (j < 16) && ((i + j) < count); j++)
+                {
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X2} ", bytes[i + j + offset]);
+                }
+
+                sb.Append(' ');
+                if (j < 16)
+                {
+                    sb.Append(new string(' ', 3 * (16 - j)));
+                }
+                for (j = 0; j < 16 && (i + j) < count; j++)
+                {
+                    var b = bytes[i + j + offset];
+                    if (b > 31 && b < 128)
+                    {
+                        sb.Append((char)b);
+                    }
+                    else
+                    {
+                        sb.Append('.');
+                    }
+                }
+
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
 
         public static object ChangeType(object input, Type conversionType, object defaultValue = null, IFormatProvider provider = null)

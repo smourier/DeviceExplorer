@@ -20,6 +20,10 @@ namespace DeviceExplorer.Model
         {
             Name = info.Name.Nullify() ?? info.Id;
             Id = info.Id;
+            if (info.Properties.TryGetValue("System.Devices.Aep.DeviceAddress", out string address))
+            {
+                Address = address;
+            }
 
             _icon = new Lazy<BitmapSource>(() =>
             {
@@ -49,6 +53,7 @@ namespace DeviceExplorer.Model
         }
 
         public string Id { get; }
+        public string Address { get; }
         public override ImageSource Image => _icon.Value;
         public override IEnumerable<Property> Properties => _properties;
     }

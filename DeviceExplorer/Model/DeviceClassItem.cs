@@ -74,7 +74,7 @@ namespace DeviceExplorer.Model
 
         internal void AddDevice(DeviceInformation device, DeviceInformation deviceInterface)
         {
-            var deviceItem = Children.Cast<DeviceItem>().FirstOrDefault(d => d.Device.Id == device.Id);
+            var deviceItem = Children.OfType<DeviceItem>().FirstOrDefault(d => d.Device.Id == device.Id);
             if (deviceItem == null)
             {
                 deviceItem = new DeviceItem(this, device);
