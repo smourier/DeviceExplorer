@@ -37,7 +37,6 @@ namespace DeviceExplorer.Model
                 "System.Devices.Aep.Bluetooth.IssueInquiry",
                 "System.Devices.Aep.Bluetooth.Le.ActiveScanning",
                 "System.Devices.Aep.Bluetooth.Le.AddressType",
-                "System.Devices.Aep.Bluetooth.Le.Advertisement",
                 "System.Devices.Aep.Bluetooth.Le.Appearance",
                 "System.Devices.Aep.Bluetooth.Le.Appearance.Category",
                 "System.Devices.Aep.Bluetooth.Le.Appearance.Subcategory",
@@ -45,7 +44,6 @@ namespace DeviceExplorer.Model
                 "System.Devices.Aep.Bluetooth.Le.ScanInterval",
                 "System.Devices.Aep.Bluetooth.Le.ScanResponse",
                 "System.Devices.Aep.Bluetooth.Le.ScanWindow",
-                "System.Devices.Aep.Bluetooth.Le.IsConnectable",
             };
 
             Watcher = DeviceInformation.CreateWatcher(null, requestedProperties, DeviceInformationKind.AssociationEndpoint);
