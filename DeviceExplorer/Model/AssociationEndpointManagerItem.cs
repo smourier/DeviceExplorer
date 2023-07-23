@@ -18,37 +18,35 @@ namespace DeviceExplorer.Model
             var requestedProperties = new string[]
             {
                 "System.Devices.GlyphIcon",
+                "System.Devices.Aep.AepId",
+                "System.Devices.Aep.CanPair",
                 "System.Devices.Aep.Category",
                 "System.Devices.Aep.ContainerId",
                 "System.Devices.Aep.DeviceAddress",
                 "System.Devices.Aep.IsConnected",
                 "System.Devices.Aep.IsPaired",
                 "System.Devices.Aep.IsPresent",
+                "System.Devices.Aep.Manufacturer",
+                "System.Devices.Aep.ModelId",
+                "System.Devices.Aep.ModelName",
                 "System.Devices.Aep.ProtocolId",
-                "System.Devices.Aep.Bluetooth.Le.IsConnectable",
                 "System.Devices.Aep.SignalStrength",
+
+                // these are specific to bluetooth
                 "System.Devices.Aep.Bluetooth.LastSeenTime",
+                "System.Devices.Aep.Bluetooth.IssueInquiry",
+                "System.Devices.Aep.Bluetooth.Le.ActiveScanning",
+                "System.Devices.Aep.Bluetooth.Le.AddressType",
+                "System.Devices.Aep.Bluetooth.Le.Advertisement",
+                "System.Devices.Aep.Bluetooth.Le.Appearance",
+                "System.Devices.Aep.Bluetooth.Le.Appearance.Category",
+                "System.Devices.Aep.Bluetooth.Le.Appearance.Subcategory",
+                "System.Devices.Aep.Bluetooth.Le.IsConnectable",
+                "System.Devices.Aep.Bluetooth.Le.ScanInterval",
+                "System.Devices.Aep.Bluetooth.Le.ScanResponse",
+                "System.Devices.Aep.Bluetooth.Le.ScanWindow",
                 "System.Devices.Aep.Bluetooth.Le.IsConnectable",
             };
-
-            //requestedProperties = new string[]
-            //{
-            //    "System.ItemNameDisplay",
-            //    "System.Devices.AepContainer.Categories",
-            //    "System.Devices.AepContainer.Children",
-            //    "System.Devices.AepContainer.CanPair",
-            //    "System.Devices.AepContainer.ContainerId",
-            //    "System.Devices.AepContainer.IsPaired",
-            //    "System.Devices.AepContainer.IsPresent",
-            //    "System.Devices.AepContainer.Manufacturer",
-            //    "System.Devices.AepContainer.ModelIds",
-            //    "System.Devices.AepContainer.ModelName",
-            //    "System.Devices.AepContainer.ProtocolIds",
-            //    "System.Devices.AepContainer.SupportedUriSchemes",
-            //    "System.Devices.AepContainer.SupportsAudio",
-            //    "System.Devices.AepContainer.SupportsImages",
-            //    "System.Devices.AepContainer.SupportsVideo",
-            //};
 
             Watcher = DeviceInformation.CreateWatcher(null, requestedProperties, DeviceInformationKind.AssociationEndpoint);
             Watcher.Added += OnDeviceAdded;
@@ -64,20 +62,23 @@ namespace DeviceExplorer.Model
 
         public DeviceWatcher Watcher { get; }
 
-        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate update)
+        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate device)
         {
         }
 
-        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate update)
+        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate device)
         {
-            //App.Current.Dispatcher.Invoke(() =>
-            //{
-            //    var item = Children.Cast<AssociationEndpointProtocolItem>().FirstOrDefault(i => i.Id == update.Id);
-            //    if (item != null)
-            //    {
-            //        Children.Remove(item);
-            //    }
-            //});
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                foreach (var protocolItem in Children)
+                {
+                    var item = protocolItem.Children.Cast<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
+                    if (item == null)
+                        continue;
+
+                    protocolItem.Children.Remove(item);
+                }
+            });
         }
 
         private void OnDeviceAdded(DeviceWatcher sender, DeviceInformation device)
@@ -87,11 +88,18 @@ namespace DeviceExplorer.Model
 
             App.Current.Dispatcher.Invoke(() =>
             {
-                var item = Children.Cast<AssociationEndpointProtocolItem>().FirstOrDefault(i => i.Id == protocolId);
+                var protocolItem = Children.Cast<AssociationEndpointProtocolItem>().FirstOrDefault(i => i.Id == protocolId);
+                if (protocolItem == null)
+                {
+                    protocolItem = new AssociationEndpointProtocolItem(this, protocolId);
+                    Children.Add(protocolItem);
+                }
+
+                var item = protocolItem.Children.Cast<AssociationEndpointItem>().FirstOrDefault(ep => ep.Id == device.Id);
                 if (item == null)
                 {
-                    item = new AssociationEndpointProtocolItem(this, protocolId);
-                    Children.Add(item);
+                    item = new AssociationEndpointItem(protocolItem, device);
+                    protocolItem.Children.Add(item);
                 }
             });
         }

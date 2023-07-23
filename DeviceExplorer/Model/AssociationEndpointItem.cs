@@ -15,11 +15,10 @@ namespace DeviceExplorer.Model
             SortingSelector = o => o.Name
         };
 
-        public AssociationEndpointItem(AssociationEndpointManagerItem parent, DeviceInformation info)
+        public AssociationEndpointItem(AssociationEndpointProtocolItem parent, DeviceInformation info)
             : base(parent)
         {
             Name = info.Name.Nullify() ?? info.Id;
-            Name = info.Id;
             Id = info.Id;
 
             _icon = new Lazy<BitmapSource>(() =>
@@ -37,6 +36,10 @@ namespace DeviceExplorer.Model
 
             foreach (var prop in info.Properties)
             {
+                // don't add bt props for non bt aep
+                if (prop.Key.Contains(".Bluetooth.") && !parent.Name.Contains("bluetooth", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
                 var p = new ValueProperty(prop.Key)
                 {
                     Value = prop.Value

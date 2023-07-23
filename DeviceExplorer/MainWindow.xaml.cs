@@ -33,16 +33,6 @@ namespace DeviceExplorer
             }
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ViewHiddenItems_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             var item = TV.GetSelectedDataContext<TreeItem>();
@@ -54,10 +44,6 @@ namespace DeviceExplorer
 
         private void Exit_Click(object sender, RoutedEventArgs e) => Close();
         private void About_Click(object sender, RoutedEventArgs e) => MessageBox.Show(Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title + " - " + (IntPtr.Size == 4 ? "32" : "64") + "-bit" + Environment.NewLine + "Copyright (C) 2021-" + DateTime.Now.Year + " Simon Mourier. All rights reserved.", Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title, MessageBoxButton.OK, MessageBoxImage.Information);
-        private void View_Refresh(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void TV_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
