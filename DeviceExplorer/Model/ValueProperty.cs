@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using DeviceExplorer.Utilities;
 
 namespace DeviceExplorer.Model
@@ -42,11 +43,45 @@ namespace DeviceExplorer.Model
                 }
                 _value = value;
 
-                GuidName = Guids.GetName(_value);
+                Hint = Guids.GetName(_value);
+
+                // check usb & pci vendor
+                if (Hint == null && _value is string str)
+                {
+                    var hidTok = @"HID\VID_";
+                    var usbTok = @"USB\VID_";
+                    var pos = str.IndexOf(usbTok, StringComparison.OrdinalIgnoreCase);
+                    if (pos < 0)
+                    {
+                        pos = str.IndexOf(hidTok, StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    if (pos >= 0 && (pos + usbTok.Length + 4) <= str.Length)
+                    {
+                        var hex = str.Substring(pos + usbTok.Length, 4);
+                        if (ushort.TryParse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var us) &&
+                            Usb.VendorsIds.TryGetValue(us, out var name))
+                        {
+                            Hint = name;
+                        }
+                    }
+
+                    var pciTok = @"PCI\VEN_";
+                    pos = str.IndexOf(pciTok, StringComparison.OrdinalIgnoreCase);
+                    if (pos >= 0 && (pos + pciTok.Length + 4) <= str.Length)
+                    {
+                        var hex = str.Substring(pos + pciTok.Length, 4);
+                        if (ushort.TryParse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var us) &&
+                            Pci.VendorsIds.TryGetValue(us, out var name))
+                        {
+                            Hint = name;
+                        }
+                    }
+                }
             }
         }
 
-        public string GuidName { get; private set; }
+        public string Hint { get; private set; }
 
         public override string ToString() => Name + "\t" + Value;
     }

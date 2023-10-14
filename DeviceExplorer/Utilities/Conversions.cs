@@ -10,6 +10,7 @@ namespace DeviceExplorer.Utilities
 {
     public static class Conversions
     {
+        public static string ToHex(this ushort u) => "0x" + u.ToString("X4");
         public static string ToHex(this int i) => "0x" + i.ToString("X8");
         public static string ToHex(this int? i) => i.HasValue ? "0x" + i.Value.ToString("X8") : null;
         public static string ToHex(this long? i) => i.HasValue ? "0x" + i.Value.ToString("X16") : null;

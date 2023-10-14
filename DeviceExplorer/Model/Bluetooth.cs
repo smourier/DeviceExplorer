@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace DeviceExplorer.Model
 
         private static IReadOnlyDictionary<ushort, string> GetKVDictionary(string fileName)
         {
-            var dic = new Dictionary<ushort, string>();
+            var dic = new ConcurrentDictionary<ushort, string>();
             var asm = Assembly.GetEntryAssembly();
             using var stream = asm.GetManifestResourceStream(asm.GetName().Name + ".Resources.Bluetooth." + fileName + ".json");
             foreach (var kv in JsonSerializer.Deserialize<KV[]>(stream))
@@ -40,7 +41,7 @@ namespace DeviceExplorer.Model
 
         private static IReadOnlyDictionary<ushort, BluetoothService> GetServicesByUuid()
         {
-            var dic = new Dictionary<ushort, BluetoothService>();
+            var dic = new ConcurrentDictionary<ushort, BluetoothService>();
             var asm = Assembly.GetEntryAssembly();
             using var stream = asm.GetManifestResourceStream(asm.GetName().Name + ".Resources.Bluetooth.service_uuids.json");
             foreach (var service in JsonSerializer.Deserialize<BluetoothService[]>(stream))
