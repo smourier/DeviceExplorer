@@ -54,6 +54,8 @@ namespace DeviceExplorer.Model
 
             public string ClassGuid { get; set; }
             public string GuidName { get; set; }
+
+            public override string ToString() => Name + "\t" + ClassGuid + "\t" + GuidName;
         }
 
         public Guid ClassGuid { get; }

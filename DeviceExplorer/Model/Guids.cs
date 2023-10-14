@@ -3,12 +3,34 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DeviceExplorer.Utilities;
 
 namespace DeviceExplorer.Model
 {
     public static class Guids
     {
         public static IReadOnlyDictionary<Guid, string> Names => _names.Value;
+
+        public static string GetName(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (value is Guid guid)
+            {
+                Names.TryGetValue(guid, out var name);
+                return name;
+            }
+
+            var str = string.Format("{0}", value).Nullify();
+            if (str == null)
+                return null;
+
+            if (Guid.TryParse(str, out guid))
+                return GetName(guid);
+
+            return null;
+        }
 
         private static readonly Lazy<IReadOnlyDictionary<Guid, string>> _names = new(GetNames);
         private static IReadOnlyDictionary<Guid, string> GetNames()
@@ -207,5 +229,78 @@ namespace DeviceExplorer.Model
         public static readonly Guid ProtocolId_Bluetooth = new("e0cbf06c-cd8b-4647-bb8a-263b43f0f974"); // GUID_DEVCLASS_BLUETOOTH
         public static readonly Guid ProtocolId_BluetoothLE = new("bb7bb05e-5972-42b5-94fc-76eaa7084d49");
         public static readonly Guid ProtocolId_NetworkCamera = new("b8238652-b500-41eb-b4f3-4234f7f5ae99"); // KSCATEGORY_NETWORK_CAMERA
+
+        public static readonly Guid APO_CLASS_UUID = new Guid("5989fce8-9cd0-467d-8a6a-5419e31529d4");
+        public static readonly Guid AUDIOENDPOINT_CLASS_UUID = new Guid("c166523c-fe0c-4a94-a586-f1a80cfbbf3e");
+        public static readonly Guid STATIC_APO_CLASS_UUID = new Guid("5989fce8-9cd0-467d-8a6a-5419e31529d4");
+        public static readonly Guid STATIC_AUDIOENDPOINT_CLASS_UUID = new Guid("c166523c-fe0c-4a94-a586-f1a80cfbbf3e");
+
+        public static readonly Guid AudioSinkServiceClass_UUID = new Guid("0000110b-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid AudioSourceServiceClass_UUID = new Guid("0000110a-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid AudioVideoServiceClass_UUID = new Guid("0000112c-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid AVRemoteControlControllerServiceClass_UUID = new Guid("0000110f-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid AVRemoteControlServiceClass_UUID = new Guid("0000110e-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid AVRemoteControlTargetServiceClass_UUID = new Guid("0000110c-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid CommonISDNAccessServiceClass_UUID = new Guid("00001128-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid CordlessTelephonyServiceClass_UUID = new Guid("00001109-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid CTNAccessServiceClass_UUID = new Guid("0000113c-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid CTNNotificationServiceClass_UUID = new Guid("0000113d-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid DialupNetworkingServiceClass_UUID = new Guid("00001103-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid DirectPrintingReferenceObjectsServiceClass_UUID = new Guid("00001120-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid DirectPrintingServiceClass_UUID = new Guid("00001118-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ESdpUpnpIpLapServiceClass_UUID = new Guid("00001301-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ESdpUpnpIpPanServiceClass_UUID = new Guid("00001300-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ESdpUpnpL2capServiceClass_UUID = new Guid("00001302-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid FaxServiceClass_UUID = new Guid("00001111-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GenericAudioServiceClass_UUID = new Guid("00001203-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GenericFileTransferServiceClass_UUID = new Guid("00001202-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GenericNetworkingServiceClass_UUID = new Guid("00001201-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GenericTelephonyServiceClass_UUID = new Guid("00001204-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GNServiceClass_UUID = new Guid("00001117-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid GNSSServerServiceClass_UUID = new Guid("00001136-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HandsfreeAudioGatewayServiceClass_UUID = new Guid("0000111f-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HandsfreeServiceClass_UUID = new Guid("0000111e-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HCRPrintServiceClass_UUID = new Guid("00001126-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HCRScanServiceClass_UUID = new Guid("00001127-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HeadsetAudioGatewayServiceClass_UUID = new Guid("00001112-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HeadsetHSServiceClass_UUID = new Guid("00001131-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HeadsetServiceClass_UUID = new Guid("00001108-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HealthDeviceProfileSinkServiceClass_UUID = new Guid("00001402-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HealthDeviceProfileSourceServiceClass_UUID = new Guid("00001401-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid HumanInterfaceDeviceServiceClass_UUID = new Guid("00001124-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ImagingAutomaticArchiveServiceClass_UUID = new Guid("0000111c-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ImagingReferenceObjectsServiceClass_UUID = new Guid("0000111d-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ImagingResponderServiceClass_UUID = new Guid("0000111b-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid IntercomServiceClass_UUID = new Guid("00001110-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid IrMCSyncCommandServiceClass_UUID = new Guid("00001107-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid IrMCSyncServiceClass_UUID = new Guid("00001104-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid LANAccessUsingPPPServiceClass_UUID = new Guid("00001102-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid MessageAccessServerServiceClass_UUID = new Guid("00001132-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid MessageNotificationServerServiceClass_UUID = new Guid("00001133-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid MPSServiceClass_UUID = new Guid("0000113b-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid NAPServiceClass_UUID = new Guid("00001116-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid OBEXFileTransferServiceClass_UUID = new Guid("00001106-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid OBEXObjectPushServiceClass_UUID = new Guid("00001105-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PANUServiceClass_UUID = new Guid("00001115-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PhonebookAccessPceServiceClass_UUID = new Guid("0000112e-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PhonebookAccessPseServiceClass_UUID = new Guid("0000112f-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PnPInformationServiceClass_UUID = new Guid("00001200-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PrintingStatusServiceClass_UUID = new Guid("00001123-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PublicBrowseGroupServiceClass_UUID = new Guid("00001002-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ReferencePrintingServiceClass_UUID = new Guid("00001119-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ReflectedUIServiceClass_UUID = new Guid("00001121-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid SerialPortServiceClass_UUID = new Guid("00001101-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid SimAccessServiceClass_UUID = new Guid("0000112d-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ThreeDimensionalDisplayServiceClass_UUID = new Guid("00001137-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid ThreeDimensionalGlassesServiceClass_UUID = new Guid("00001138-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid UDIMTServiceClass_UUID = new Guid("0000112a-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid UDITAServiceClass_UUID = new Guid("0000112b-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid UPnpIpServiceClass_UUID = new Guid("00001206-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid UPnpServiceClass_UUID = new Guid("00001205-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid VideoConferencingGWServiceClass_UUID = new Guid("00001129-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid VideoSinkServiceClass_UUID = new Guid("00001304-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid VideoSourceServiceClass_UUID = new Guid("00001303-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid WAPClientServiceClass_UUID = new Guid("00001114-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid WAPServiceClass_UUID = new Guid("00001113-0000-1000-8000-00805f9b34fb");
     }
 }

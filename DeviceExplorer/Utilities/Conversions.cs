@@ -515,6 +515,13 @@ namespace DeviceExplorer.Utilities
 
                 sb.AppendLine();
             }
+
+            var max = bytes.Length - offset - count;
+            if (max > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine(" ... (total length is " + max + " bytes, only displaying " + count + ") ...");
+            }
             return sb.ToString();
         }
 

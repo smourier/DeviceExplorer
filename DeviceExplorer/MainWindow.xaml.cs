@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -71,6 +72,28 @@ namespace DeviceExplorer
             {
                 item.CollapseAll();
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in DG.SelectedItems)
+            {
+                sb.Append(item);
+                sb.AppendLine();
+            }
+
+            var text = sb.ToString();
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            Clipboard.SetText(text);
+            MessageBox.Show(this, "This was copied to the clipboard:" + Environment.NewLine + Environment.NewLine + text);
+        }
+
+        private void CM_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            CMCopy.IsEnabled = DG.SelectedItems.Count > 0;
         }
     }
 }

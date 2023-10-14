@@ -119,6 +119,8 @@ namespace DeviceExplorer.Model
 
             public string ProtocolId { get; set; }
             public string GuidName { get; set; }
+
+            public override string ToString() => Name + "\t" + ProtocolId + "\t" + GuidName;
         }
 
         private static Dictionary<Guid, string> GetNamesFromRegistry()

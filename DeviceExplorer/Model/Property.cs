@@ -2,12 +2,12 @@
 
 namespace DeviceExplorer.Model
 {
-    public class Property : IComparable, IComparable<Property>
+    public abstract class Property : IComparable, IComparable<Property>
     {
-        public Property(string name)
+        protected Property(string name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             Name = name;
         }

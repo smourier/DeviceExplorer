@@ -65,7 +65,10 @@
                 Width="5"
                 HorizontalAlignment="Center"
                 ShowsPreview="True" />
-            <Grid Name="PropsGrid" Grid.Column="3" TextBlock.FontFamily="Consolas">
+            <Grid
+                Name="PropsGrid"
+                Grid.Column="3"
+                TextBlock.FontFamily="Consolas">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="89*" />
                     <RowDefinition Height="71*" />
@@ -73,7 +76,16 @@
                 <DataGrid
                     x:Name="DG"
                     Grid.RowSpan="2"
-                    IsReadOnly="True" />
+                    IsReadOnly="True">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu Name="CM" ContextMenuOpening="CM_ContextMenuOpening">
+                            <MenuItem
+                                x:Name="CMCopy"
+                                Click="MenuItem_Click"
+                                Header="Copy" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
             </Grid>
         </Grid>
     </Grid>
