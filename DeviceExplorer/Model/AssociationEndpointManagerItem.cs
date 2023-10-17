@@ -50,7 +50,14 @@ namespace DeviceExplorer.Model
             Watcher.Added += OnDeviceAdded;
             Watcher.Removed += OnDeviceRemoved;
             Watcher.Updated += OnDeviceUpdated;
-            Watcher.Start();
+            try
+            {
+                Watcher.Start();
+            }
+            catch
+            {
+                // don't care, for some reason it's not supported
+            }
 
             Name = "Assocation Endpoints";
             IsExpanded = true;

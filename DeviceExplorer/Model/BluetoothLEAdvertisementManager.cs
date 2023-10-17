@@ -12,7 +12,14 @@ namespace DeviceExplorer.Model
             EndPointManager = endpointManager;
             Watcher = new BluetoothLEAdvertisementWatcher();
             Watcher.Received += OnWatcherReceived;
-            Watcher.Start();
+            try
+            {
+                Watcher.Start();
+            }
+            catch
+            {
+                // don't care, for some reason it's not supported
+            }
         }
 
         public AssociationEndpointManagerItem EndPointManager { get; }
