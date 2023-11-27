@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using DeviceExplorer.Properties;
 using DeviceExplorer.Utilities;
 using Windows.Devices.Enumeration;
 
@@ -73,6 +74,9 @@ namespace DeviceExplorer.Model
 
         private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate device)
         {
+            if (Settings.Default.DontRemoveAE)
+                return;
+
             App.Current?.Dispatcher?.Invoke(() =>
             {
                 foreach (var protocolItem in Children)

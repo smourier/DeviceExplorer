@@ -23,6 +23,13 @@
                     Header="E_xit"
                     InputGestureText="Alt+F4" />
             </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem
+                    x:Name="DontRemoveAE"
+                    Click="DontRemoveAE_Click"
+                    Header="Don't Remove Discoved Association Endpoints"
+                    IsCheckable="True" />
+            </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Click="About_Click" Header="About..." />
             </MenuItem>

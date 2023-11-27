@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DeviceExplorer.Model;
+using DeviceExplorer.Properties;
 using DeviceExplorer.Utilities;
 
 namespace DeviceExplorer
@@ -19,6 +20,7 @@ namespace DeviceExplorer
             BluetoothLEAdvertisementManager = new BluetoothLEAdvertisementManager(AssociationEndpointManagerItem);
 
             TV.ItemsSource = new TreeItem[] { DeviceManagerItem, AssociationEndpointManagerItem };
+            DontRemoveAE.IsChecked = Settings.Default.DontRemoveAE;
         }
 
         public DeviceManagerItem DeviceManagerItem { get; }
@@ -97,6 +99,12 @@ namespace DeviceExplorer
         private void CM_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             CMCopy.IsEnabled = DG.SelectedItems.Count > 0;
+        }
+
+        private void DontRemoveAE_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.DontRemoveAE = DontRemoveAE.IsChecked;
+            Settings.Default.Save();
         }
     }
 }
