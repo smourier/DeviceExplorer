@@ -11,7 +11,7 @@ using System.Runtime.Versioning;
 [assembly: AssemblyDescription("Device Explorer")]
 [assembly: AssemblyCompany("Simon Mourier")]
 [assembly: AssemblyProduct("Device Explorer")]
-[assembly: AssemblyCopyright("Copyright (C) 2021-2024 Simon Mourier. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright (C) 2021-2025 Simon Mourier. All rights reserved.")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("17aa5035-ddc4-45ca-98b3-2a3182a61747")]
